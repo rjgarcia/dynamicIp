@@ -1,0 +1,20 @@
+Template: dynamic-ip/Basic_Config
+Type: boolean
+Description: ¿Quieres configurar los parámetros básicos de dynamic-ip?
+  Estos parámetros permiten posteriormente enviar un email a la dirección configurada.
+
+Template: dynamic-ip/UserName
+Type: string
+Description: Introduce el nombre de usuario de tu cuenta de email.
+
+Template: dynamic-ip/Password
+Type: password
+Description: Introduce la contraseña de tu cuenta de email.
+
+Template: dynamic-ip/SMTP
+Type: string
+Description: Introduce el servidor SMTP de tu cuenta de email
+
+Template: dynamic-ip/SMPTPort
+Type: string
+Description: Introduce el puerto del servidor SMTP de tu cuenta de email.

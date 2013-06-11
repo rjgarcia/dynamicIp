@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+# Configurar
+db_input medium dynamic-ip/Basic_Config || true
+db_go
+
+# Check their answer.
+db_get dynamic-ip/Basic_Config
+if [ "$RET" = "true" ]; then
+    db_input high  dynamic-ip/UserName || username
+    db_input high  dynamic-ip/Password || password
+    db_input high  dynamic-ip/SMTP || smtp
+    db_input high  dynamic-ip/SMPTPort || port
+    db_go
+fi

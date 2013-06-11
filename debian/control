@@ -1,0 +1,17 @@
+Source: dynamic-ip
+Section: net
+Priority: extra
+Maintainer: Rafael J. García <rafagarp@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://git.debian.org/collab-maint/dynamic-ip.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/dynamic-ip.git;a=summary
+
+Package: dynamic-ip
+Architecture: all
+Section: net
+Priority: optional
+Depends: python (<< 3), python (>= 2.6), debconf
+Description: Email you when your external dynamic ip change.
+  Email you when your external dynamic ip change.

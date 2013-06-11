@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ "$1" = "configure" ] ; then
+  touch /var/log/ip_dyn.log
+
+fi
+
+
+exit 0
