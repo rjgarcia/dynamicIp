@@ -5,16 +5,20 @@ Description: ¿Quieres configurar los parámetros básicos de dynamic-ip?
 
 Template: dynamic-ip/UserName
 Type: string
+Default: UserName
 Description: Introduce el nombre de usuario de tu cuenta de email.
 
 Template: dynamic-ip/Password
 Type: password
+Default: Password
 Description: Introduce la contraseña de tu cuenta de email.
 
 Template: dynamic-ip/SMTP
 Type: string
+Default: SMTP
 Description: Introduce el servidor SMTP de tu cuenta de email
 
 Template: dynamic-ip/SMPTPort
 Type: string
+Default: SMPTPort
 Description: Introduce el puerto del servidor SMTP de tu cuenta de email.

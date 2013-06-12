@@ -1,7 +1,58 @@
 #!/bin/sh
 
+CONFIGFILE=/etc/dynamic-ip/dynamic-ip.cfg
+set -e
+
+. /usr/share/debconf/confmodule
+
+
 if [ "$1" = "configure" ] ; then
-  touch /var/log/ip_dyn.log
+	touch /var/log/ip_dyn.log
+
+
+	# Generate config file, if it doesn't exist.
+	# An alternative is to copy in a template
+	# file from elsewhere.
+	if [ -e $CONFIGFILE ]; then
+    
+		echo "[ConfigAccount]" > $CONFIGFILE
+		echo "Username: username@server.dom" > $CONFIGFILE
+		echo "Password: pass" > $CONFIGFILE
+		echo "[ConfigServer]" > $CONFIGFILE
+		echo "SMTP: smtp.server.dom" > $CONFIGFILE
+		echo "SMPTPort: port" > $CONFIGFILE
+	
+
+
+		# Substitute in the values from the debconf db.
+		# There are obvious optimizations possible here.
+		# The cp before the sed ensures we do not mess up
+		# the config file's ownership and permissions.
+		
+		db_get dynamic-ip/UserName
+		UserName="$RET"
+
+		db_get dynamic-ip/Password
+		Password="$RET"
+
+		db_get dynamic-ip/SMTP
+		SMTP="$RET"
+
+		db_get dynamic-ip/SMPTPort
+		SMPTPort="$RET"
+
+
+		cp -a -f $CONFIGFILE $CONFIGFILE.tmp
+		
+		sed -e "s/^ *UserName:.*/UserName: \"$UserName\"/" \
+                    -e "s/^ *Password:.*/Password: \"$Password\"/" \
+                    -e "s/^ *SMTP:.*/SMTP: \"$SMTP\"/" \
+                    -e "s/^ *SMPTPort:.*/SMPTPort: \"$SMPTPort\"/" \            
+                    < $CONFIGFILE > $CONFIGFILE.tmp
+                mv -f $CONFIGFILE.tmp $CONFIGFILE
+	fi
+
+    
 
 fi
 
