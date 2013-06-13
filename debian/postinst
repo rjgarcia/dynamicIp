@@ -1,20 +1,17 @@
 #!/bin/sh
 
-CONFIGFILE=/etc/dynamic-ip/dynamic-ip.cfg
+CONFIGFILE=/etc/dynamicIp/dynamicIp.cfg
 set -e
 
 . /usr/share/debconf/confmodule
 
 
 if [ "$1" = "configure" ] ; then
-	touch /var/log/ip_dyn.log
-
-
 	# Generate config file, if it doesn't exist.
 	# An alternative is to copy in a template
 	# file from elsewhere.
 	if [ -e $CONFIGFILE ]; then
-		mkdir /etc/dynamic-ip/
+		#mkdir /etc/dynamic-ip/
 		echo "[ConfigAccount]" > $CONFIGFILE
 		echo "Username: username@server.dom" > $CONFIGFILE
 		echo "Password: pass" > $CONFIGFILE
@@ -43,18 +40,16 @@ if [ "$1" = "configure" ] ; then
 
 
 		cp -a -f $CONFIGFILE $CONFIGFILE.tmp
-		
-		sed -e "s/^ *UserName:.*/UserName: \"$UserName\"/" \
-                    -e "s/^ *Password:.*/Password: \"$Password\"/" \
-                    -e "s/^ *SMTP:.*/SMTP: \"$SMTP\"/" \
-                    -e "s/^ *SMPTPort:.*/SMPTPort: \"$SMPTPort\"/" \            
-                    < $CONFIGFILE > $CONFIGFILE.tmp
-                mv -f $CONFIGFILE.tmp $CONFIGFILE
-	
 
-    
+		sed -e "s/^ *Username:.*/Username: $UserName/" \
+                    -e "s/^ *Password:.*/Password: $Password/" \
+                    -e "s/^ *SMTP:.*/SMTP: $SMTP/" \
+                    -e "s/^ *SMPTPort:.*/SMPTPort: $SMPTPort/" \
+                    < $CONFIGFILE > $CONFIGFILE.tmp
+                #mv -f $CONFIGFILE.tmp $CONFIGFILE
+
+
 
 fi
-
 
 exit 0

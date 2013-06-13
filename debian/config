@@ -1,7 +1,22 @@
 #!/bin/sh -e
 
+#CONFIGFILE=/etc/dynamic-ip/dynamic-ip.cfg
+#set -e
+
 # Source debconf library.
 . /usr/share/debconf/confmodule
+
+
+ # Carga el fichero de configuracion, si existe.
+ #        if [ -e $CONFIGFILE ]; then
+ #           . $CONFIGFILE || true
+
+#                db_set dynamic-ip/UserName "$username"
+# 	        db_get dynamic-ip/Password "$password"
+# 		db_get dynamic-ip/SMTP     "$smtp"
+# 		db_get dynamic-ip/SMPTPort "$port"
+  #      fi
+
 
 # Configurar
 #db_input medium dynamic-ip/Basic_Config || true

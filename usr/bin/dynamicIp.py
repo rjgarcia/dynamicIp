@@ -67,9 +67,9 @@ def getExternalIP():
 
 def getlastIP():
 	try:
-		fileHandle = open ('/var/log/ip_dyn.log',"r" )
+		fileHandle = open ('/var/log/dynamic_ip/dynamic_ip.log',"r" )
 	except:
-		print("Error al intentar abrir el archivo de log \"/var/log/ip_dyn.log\"")
+		print("Error al intentar abrir el archivo de log \"/var/dynamic_ip/dynamic_ip.log\"")
 		exit(1)
 		
 	lineList = fileHandle.readlines()
@@ -77,8 +77,8 @@ def getlastIP():
 	
 	if len(lineList) > 100: 
 		try:
-			os.system("rm /var/log/ip_dyn.log")
-			file = open('/var/log/ip_dyn.log', 'a+')
+			os.system("rm /var/log/dynamic_ip/dynamic_ip.log")
+			file = open('/var/log/dynamic_ip/dynamic_ip.log', 'a+')
 			file.write(lineList[-1])
 			file.close()
 		except:
@@ -96,11 +96,11 @@ def checkIP():
         print "\n son iguales"
     else:
 		try:
-			file = open('/var/log/ip_dyn.log', 'a+')
+			file = open('/var/log/dynamic_ip/dynamic_ip.log', 'a+')
 			file.write(strftime("%d-%m-%Y %H:%M:%S", gmtime()) + "\t" + getExternalIP() + "\n")
 			file.close()			
 		except:
-			print("Error al intentar abrir el archivo de log \"/var/log/ip_dyn.log\"")
+			print("Error al intentar abrir el archivo de log \"/var/log/dynamic_ip/dynamic_ip.log\"")
 			exit(1)
 		
 		send_mail_google(Config.get('ConfigAccount','Username'),Config.get('ConfigAccount','Username'),"Ip Dinámica servidor",getExternalIP(),Config.get('ConfigAccount','Password'))	
