@@ -9,7 +9,7 @@ from time import gmtime, strftime
 try:
 	import ConfigParser
 	Config = ConfigParser.ConfigParser()
-	configFile = "/etc/dyamicIp/dyamicIp.conf"
+	configFile = "/etc/dynamicIp/dynamicIp.cfg"
 	Config.read(configFile)
 except:
 	print("Ha habido un problema al cargar el archivo de configuración 	\"/etc/dyamicIp/dyamicIp.conf\", revíselo por favor")
@@ -18,25 +18,33 @@ def send_mail_google(sender = "",recipient = "", subject = "", body ="",password
 	#SMTP_SERVER = 'smtp.gmail.com'
 	#SMTP_PORT = 587
 	
+	#smtplib.set_debuglevel(3)
+	
+	
+	
 	SMTP_SERVER = Config.get('ConfigServer','SMTP')
 	SMTP_PORT = Config.get('ConfigServer','SMPTPort')
 
+	print (SMTP_SERVER + " " + SMTP_PORT)
 
 	body = "" + body + ""
  
 	headers = ["From: " + sender,
-           "Subject: " + subject,
-           "To: " + recipient,
-           "MIME-Version: 1.0",
-           "Content-Type: text/html"]
+		   "Subject: " + subject,
+		   "To: " + recipient,
+		   "MIME-Version: 1.0",
+		   "Content-Type: text/html"]
 	headers = "\r\n".join(headers)
- 
+	
+	print (headers)
+	
 	session = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
- 
 	session.ehlo()
 	session.starttls()
 	session.ehlo
 	session.login(sender, password)
+	
+	
 	
 	session.sendmail(sender, recipient, headers + "\r\n\r\n" + body)
 	session.quit()
@@ -53,7 +61,7 @@ class MiIPdinamica(HTMLParser):
 	def get_ip(self):
 		return self.ip   
 
-    
+	
 def getExternalIP():
 	f = urllib.urlopen("http://checkip.dyndns.org")
 	pag_web = f.read()	
@@ -69,7 +77,7 @@ def getlastIP():
 	try:
 		fileHandle = open ('/var/log/dynamic_ip/dynamic_ip.log',"r" )
 	except:
-		print("Error al intentar abrir el archivo de log \"/var/dynamic_ip/dynamic_ip.log\"")
+		print("Error al intentar abrir el archivo de log \"/var/log/dynamic_ip/dynamic_ip.log\"")
 		exit(1)
 		
 	lineList = fileHandle.readlines()
@@ -83,18 +91,21 @@ def getlastIP():
 			file.close()
 		except:
 			pass
-
-	ip = lineList[-1].split("\t")
-        ip = ip[1].split("\n")
-    
+	if len(lineList) > 0:
+		ip = lineList[-1].split("\t")
+		ip = ip[1].split("\n")
+	else:
+		ip = [0]
+		
 	return ip[0]
 			
 
 	
 def checkIP():
-    if getExternalIP() == getlastIP():
-        print "\n son iguales"
-    else:
+	print (Config.get('ConfigAccount','Username') + " " + Config.get('ConfigAccount','Username') + " " + "Ip Dinámica servidor" + " " + getExternalIP() + " " + Config.get('ConfigAccount','Password'))
+	if getExternalIP() == getlastIP():
+		print "\n son iguales"
+	else:
 		try:
 			file = open('/var/log/dynamic_ip/dynamic_ip.log', 'a+')
 			file.write(strftime("%d-%m-%Y %H:%M:%S", gmtime()) + "\t" + getExternalIP() + "\n")
@@ -103,15 +114,19 @@ def checkIP():
 			print("Error al intentar abrir el archivo de log \"/var/log/dynamic_ip/dynamic_ip.log\"")
 			exit(1)
 		
-		send_mail_google(Config.get('ConfigAccount','Username'),Config.get('ConfigAccount','Username'),"Ip Dinámica servidor",getExternalIP(),Config.get('ConfigAccount','Password'))	
-        #send_mail_google("lestatmer@gmail.com","lestatmer@gmail.com","Ip Dinámica servidor",getExternalIP(),"patatapatata")
+		try:
+			send_mail_google(Config.get('ConfigAccount','Username'),Config.get('ConfigAccount','Username'),"Ip Dinámica servidor",getExternalIP(),Config.get('ConfigAccount','Password'))	
+		except smtplib.SMTPException as e:
+			print e
+			print("No se ha podido enviar el email a: " + Config.get('ConfigAccount','Username'))
+		#send_mail_google("lestatmer@gmail.com","lestatmer@gmail.com","Ip Dinámica servidor",getExternalIP(),"patatapatata")
 		
 if __name__ == "__main__":
 
-    checkIP()
-    
-    
-    
-    
-    
+	checkIP()
+	
+	
+	
+	
+	
 	
