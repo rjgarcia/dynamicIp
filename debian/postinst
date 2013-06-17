@@ -34,8 +34,6 @@ if [ "$1" = "configure" ] ; then
                     < $CONFIGFILE > $CONFIGFILE.tmp
          mv -f $CONFIGFILE.tmp $CONFIGFILE
 
-
-
 fi
 
 exit 0
