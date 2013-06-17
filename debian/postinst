@@ -12,27 +12,31 @@ if [ "$1" = "configure" ] ; then
   # The cp before the sed ensures we do not mess up
   # the config file's ownership and permissions.
 
-	db_get dynamic-ip/UserName
-	UserName=$RET
+	db_get dynamic-ip/Basic_Config
+	if [ "$RET" = "true" ]; then
+	
+		db_get dynamic-ip/UserName
+		UserName=$RET
 
-	db_get dynamic-ip/Password
-	Password=$RET
+		db_get dynamic-ip/Password
+		Password=$RET
 
-	db_get dynamic-ip/SMTP
-	SMTP=$RET
+		db_get dynamic-ip/SMTP
+		SMTP=$RET
 
-	db_get dynamic-ip/SMPTPort
-	SMPTPort=$RET
+		db_get dynamic-ip/SMPTPort
+		SMPTPort=$RET
 
 
-	cp -af $CONFIGFILE $CONFIGFILE.tmp
+		cp -af $CONFIGFILE $CONFIGFILE.tmp
 
-	sed -e "s/^ *Username:.*/Username: $UserName/" \
+		sed -e "s/^ *Username:.*/Username: $UserName/" \
                     -e "s/^ *Password:.*/Password: $Password/" \
                     -e "s/^ *SMTP:.*/SMTP: $SMTP/" \
                     -e "s/^ *SMPTPort:.*/SMPTPort: $SMPTPort/" \
                     < $CONFIGFILE > $CONFIGFILE.tmp
          mv -f $CONFIGFILE.tmp $CONFIGFILE
+    fi     
 
 fi
 
