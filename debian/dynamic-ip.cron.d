@@ -1,1 +1,1 @@
-*/15 * * * * /usr/bin/dynamicIp.py
+*/15 * * * * root /usr/bin/dynamicIp.py
