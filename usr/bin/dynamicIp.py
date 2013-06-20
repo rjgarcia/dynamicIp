@@ -15,17 +15,10 @@ except:
 	print("Ha habido un problema al cargar el archivo de configuración 	\"/etc/dyamicIp/dyamicIp.conf\", revíselo por favor")
 
 def send_mail_google(sender = "",recipient = "", subject = "", body ="",password = ""):
-	#SMTP_SERVER = 'smtp.gmail.com'
-	#SMTP_PORT = 587
-	
-	#smtplib.set_debuglevel(3)
-	
-	
 	
 	SMTP_SERVER = Config.get('ConfigServer','SMTP')
 	SMTP_PORT = Config.get('ConfigServer','SMPTPort')
 
-	print (SMTP_SERVER + " " + SMTP_PORT)
 
 	body = "" + body + ""
  
@@ -36,7 +29,6 @@ def send_mail_google(sender = "",recipient = "", subject = "", body ="",password
 		   "Content-Type: text/html"]
 	headers = "\r\n".join(headers)
 	
-	print (headers)
 	
 	session = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
 	session.ehlo()
@@ -102,7 +94,6 @@ def getlastIP():
 
 	
 def checkIP():
-	print (Config.get('ConfigAccount','Username') + " " + Config.get('ConfigAccount','Username') + " " + "Ip Dinámica servidor" + " " + getExternalIP() + " " + Config.get('ConfigAccount','Password'))
 	if getExternalIP() == getlastIP():
 		print "\n son iguales"
 	else:

@@ -36,6 +36,7 @@ if [ "$1" = "configure" ] ; then
                     -e "s/^ *SMPTPort:.*/SMPTPort: $SMPTPort/" \
                     < $CONFIGFILE > $CONFIGFILE.tmp
          mv -f $CONFIGFILE.tmp $CONFIGFILE
+	chmod 600 $CONFIGFILE
     fi     
 
 fi
